@@ -129,7 +129,7 @@ class PDFBox(object):
 
     def extract_text(self, input_path, output_path='',
                      password=None, encoding=None, html=False, sort=False,
-                     ignore_beads=False, start_page=1, end_page=None):
+                     ignore_beads=False, start_page=1, end_page=None, always_next=False):
         """
         Extract all text from PDF file.
 
@@ -166,7 +166,8 @@ class PDFBox(object):
                   (' -sort' if sort else '') +\
                   (' -ignoreBeads' if ignore_beads else '') +\
                   (' -startPage {start_page}'.format(start_page=start_page) if start_page else '') +\
-                  (' -endPage {end_page}'.format(end_page=end_page) if end_page else '')
+                  (' -endPage {end_page}'.format(end_page=end_page) if end_page else '') +\
+                  (' -alwaysNext' if always_next else '')
         if not output_path:
             options += ' -console'
         cmd = '{java_path} -jar {pdfbox_path} ExtractText {options} {input_path} {output_path}'.format(java_path=self.java_path,

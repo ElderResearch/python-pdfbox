@@ -38,8 +38,8 @@ def setUpModule():
 
 def empty_results():
     for f in glob(os.path.join(TEST_FOLDER, RESULTS_FOLDER, '*.pdf')):
-            os.remove(f)
-            print("{} remove.".format(f))
+        os.remove(f)
+        print("{} removed.".format(f))
 
 if __name__ == '__main__':
     main()
