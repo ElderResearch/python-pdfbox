@@ -31,11 +31,14 @@ and caches it if not present.
 
 Usage
 -----
-The interface currently exposes the text extraction feature of PDFBox only: ::
+The interface currently exposes the text extraction, merge, split, and debugger features of PDFBox: ::
 
     import pdfbox
     p = pdfbox.PDFBox()
     text = p.extract_text('/path/to/my_file.pdf')
+    p.split_file('/path/to/my_file.pdf)
+    p.merge(['/path/to/my_file1.pdf, '/path/to/my_file2.pdf])
+    p.debugger('/path/to/my_file.pdf)
     
 Development
 -----------

@@ -205,7 +205,7 @@ class PDFBox(object):
                                                                                       input_path=input_path)
         self._run_cmd(cmd)
 
-    def merge_pdf(self, source_files=[], target_file="merged.pdf"):
+    def merge(self, source_files=[], target_file="merged.pdf"):
         """
             Merge pdf files.
 
