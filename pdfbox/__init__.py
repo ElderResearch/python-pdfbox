@@ -15,6 +15,7 @@ import urllib.request
 import appdirs
 import pkg_resources
 import sarge
+from sarge import run, Capture
 
 pdfbox_archive_url = 'https://archive.apache.org/dist/pdfbox/'
 
@@ -176,3 +177,67 @@ class PDFBox(object):
         p = sarge.capture_stdout(cmd)
         if not output_path:
             return p.stdout.text
+
+    def split_file(self, input_path, password=None,
+                   split=None, start_page=None, end_page=None):
+        """
+            Split a pdf file.
+
+            Parameters
+            ----------
+            password : str
+                PDF password.
+            start_page : int
+                The page to start at.
+            end_page : int
+                The page to stop at.
+            split : int
+                Number of pages of every splitted part of the pdf.
+        """
+        options = (' -password {password}'.format(password=password) if password else '') +\
+                  (' -startPage {start_page}'.format(start_page=start_page) if start_page else '') +\
+                  (' -endPage {end_page}'.format(end_page=end_page) if end_page else '') +\
+                  (' -split {split}'.format(split=split) if split else '')
+        cmd = '{java_path} -jar {pdfbox_path} PDFSplit {options} {input_path}'.format(java_path=self.java_path,
+                                                                                      pdfbox_path=self.pdfbox_path,
+                                                                                      options=options,
+                                                                                      input_path=input_path)
+        self._run_cmd(cmd)
+
+    def merge_pdf(self, source_files=[], target_file="merged.pdf"):
+        """
+            Merge pdf files.
+
+            Parameters
+            ----------
+            source_files : [str]
+                List of file paths to merge.
+            target_file : str
+                Path of pdf file to merge into. Default will be local directory 'merged.pdf'
+        """
+        if len(source_files) < 2:
+            print("Not enough source files to merge.  Need to have at least 2 source files.")
+            return
+        cmd = '{java_path} -jar {pdfbox_path} PDFMerger {source} {target}'.format(java_path=self.java_path,
+                                                                                pdfbox_path=self.pdfbox_path,
+                                                                                source=" ".join(source_files),
+                                                                                target=target_file)
+        self._run_cmd(cmd)
+
+    def pdf_debugger(self, input_path, password=None, view_structure=None):
+        """
+            Opens the pdf in a debugger.
+        """
+        options = (' -password {password}'.format(password=password) if password else '') +\
+                (' -viewstructure' if view_structure else '')
+        cmd = '{java_path} -jar {pdfbox_path} PDFDebugger {input_path} {options}'.format(java_path=self.java_path,
+                                                                                pdfbox_path=self.pdfbox_path,
+                                                                                options=options,
+                                                                                input_path=input_path)
+        self._run_cmd(cmd)
+
+    def _run_cmd(self, cmd):
+        print("PDFBox is running command: ")
+        print(cmd)
+        p = run(cmd, stdout=Capture(), async_=True)
+        p.close()
