@@ -237,6 +237,24 @@ class PDFBox(object):
                                                                                 input_path=input_path)
         self._run_cmd(cmd)
 
+    def to_image(self, input_path, password=None, image_type=None, output_prefix=None,
+                start_page=None, end_page=None, page=None, dpi=None, color=None, cropbox=None, time=None):
+        options = (' -password {password}'.format(password=password) if password else '') +\
+            (' -imageType {image_type}'.format(image_type=image_type) if image_type else '') +\
+            (' -outputPrefix {output_prefix}'.format(output_prefix=output_prefix) if output_prefix else '') +\
+            (' -startPage {start_page}'.format(start_page=start_page) if start_page else '') +\
+            (' -endPage {end_page}'.format(end_page=end_page) if end_page else '') +\
+            (' -page {page}'.format(page=page) if page else '') +\
+            (' -dpi {dpi}'.format(dpi=dpi) if dpi else '') +\
+            (' -color {color}'.format(color=color) if color else '') +\
+            (' -cropbox {cropbox}'.format(cropbox=" ".join(cropbox)) if cropbox else '') +\
+            (' -color {color}'.format(color=color) if color else '')
+        cmd = '{java_path} -jar {pdfbox_path} PDFToImage {input_path} {options}'.format(java_path=self.java_path,
+                                                                                pdfbox_path=self.pdfbox_path,
+                                                                                options=options,
+                                                                                input_path=input_path)
+        self._run_cmd(cmd)
+
     def _run_cmd(self, cmd):
         print("PDFBox is running command: ")
         print(cmd)

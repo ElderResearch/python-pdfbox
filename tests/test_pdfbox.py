@@ -29,6 +29,13 @@ class test_pdfbox(TestCase):
         pdf_files = glob(os.path.join(TEST_FOLDER, RESULTS_FOLDER, '*-*.pdf'))
         self.assertEqual(len(pdf_files), 2)
 
+    def test_image(self):
+        p = pdfbox.PDFBox()
+        p.merge([os.path.join(TEST_FOLDER, 'test.pdf'), os.path.join(TEST_FOLDER, 'test1.pdf')], 
+                    target_file=os.path.join(TEST_FOLDER, RESULTS_FOLDER, 'merged.pdf'))
+        p.to_image(os.path.join(TEST_FOLDER, RESULTS_FOLDER, 'merged.pdf'), dpi=24)
+        self.assertEqual(len(glob(os.path.join(TEST_FOLDER, RESULTS_FOLDER, '*.jpg'))), 2)
+
 
 def tearDownModule():
     empty_results()
@@ -37,7 +44,7 @@ def setUpModule():
     empty_results()
 
 def empty_results():
-    for f in glob(os.path.join(TEST_FOLDER, RESULTS_FOLDER, '*.pdf')):
+    for f in glob(os.path.join(TEST_FOLDER, RESULTS_FOLDER, '*')):
         os.remove(f)
         print("{} removed.".format(f))
 
