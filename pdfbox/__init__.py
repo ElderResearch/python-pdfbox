@@ -239,6 +239,13 @@ class PDFBox(object):
 
     def to_image(self, input_path, password=None, image_type=None, output_prefix=None,
                 start_page=None, end_page=None, page=None, dpi=None, color=None, cropbox=None, time=None):
+        """
+            Turns each page of a pdf into an individual image with the page number on the end of the file name.
+            By default if 'test.pdf' has 2 pages you will get 'test1.jpg' and 'test2.jpg'.
+
+            Supports all the options found on the jar.
+            https://pdfbox.apache.org/2.0/commandline.html#pdftoimage
+        """
         options = (' -password {password}'.format(password=password) if password else '') +\
             (' -imageType {image_type}'.format(image_type=image_type) if image_type else '') +\
             (' -outputPrefix {output_prefix}'.format(output_prefix=output_prefix) if output_prefix else '') +\
