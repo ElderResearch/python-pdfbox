@@ -175,9 +175,12 @@ class PDFBox(object):
                                                                                                        options=options,
                                                                                                        input_path=input_path,
                                                                                                        output_path=output_path)
-        p = sarge.capture_stdout(cmd)
+        print("PDFBox is running command: ")
+        print(cmd)
+        p = sarge.capture_both(cmd, async_=True)
         if not output_path:
             return p.stdout.text
+        return p
 
     def split_file(self, input_path, password=None,
                    split=None, start_page=None, end_page=None):
